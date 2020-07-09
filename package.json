@@ -1,0 +1,26 @@
+{
+  "name": "ia-trabalho1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.mjs",
+    "problema1": "npm start hillClimbing problema1 && npm start hillClimbingRestart problema1 && npm start simulatedAnnealing problema1",
+    "problema2": "npm start hillClimbing problema2 && npm start hillClimbingRestart problema2 && npm start simulatedAnnealing problema2",
+    "problema3": "npm start hillClimbing problema3 ./input/tsp-example-rwanda-1621cities.txt && npm start hillClimbingRestart problema3 ./input/tsp-example-rwanda-1621cities.txt && npm start simulatedAnnealing problema3 ./input/tsp-example-rwanda-1621cities.txt",
+    "all": "npm run problema1 && npm run problema2 && npm run problema3",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bigfloat": "^0.1.1",
+    "chalk": "^4.1.0",
+    "d3-node": "^2.2.2",
+    "d3node-linechart": "^0.1.2",
+    "d3node-output": "^1.0.3",
+    "gifencoder": "^2.0.1",
+    "png-file-stream": "^1.2.1",
+    "random-normal": "^1.0.0"
+  }
+}
