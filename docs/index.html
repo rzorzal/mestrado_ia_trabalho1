@@ -4,7 +4,24 @@
 <head>
   <meta charset="utf-8">
   <title>Report - Trabalho1 - Disciplina IA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style media="screen">
+    * {
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      box-sizing: border-box;
+      line-height: 1.43;
+      letter-spacing: 0.01071em;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    html {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
     body {
       padding: 10px;
       margin: 0;
@@ -23,6 +40,7 @@
       border-radius: 2px;
       margin-right: 4px;
       border-bottom: 0;
+      text-transform: capitalize;
     }
 
     article {
@@ -31,7 +49,7 @@
 
     section {
       position: absolute;
-      padding: 8px;
+      padding: 10px;
       border: 1px solid #DDD;
       border-radius: 2px;
       background: #fbfbfb;
@@ -58,6 +76,7 @@
 
     h2 {
       text-transform: capitalize;
+      border-bottom: 1px solid #ddd;
       padding: 5px;
       margin: 0;
     }
@@ -67,12 +86,12 @@
       border: 2px solid black;
       border-collapse: collapse;
       max-width: 800px;
-      min-width: 800px;
     }
 
     table thead tr {
       color: white;
       background-color: #777;
+      border-bottom: 1px solid #ddd;
     }
 
     table thead tr th {
@@ -85,6 +104,7 @@
 
     table tbody tr td {
       padding: 5px;
+      background-color: #fff;
     }
 
     table tbody tr td:not(:last-child) {
@@ -109,24 +129,39 @@
       padding: 10px;
       border: 1px solid #ddd;
       border-radius: 5px;
-      margin-bottom: 5px;
+      margin-bottom: 11px;
       background-color: #fff;
+      box-shadow: 2px 2px 5px #ddd;
     }
 
-    .execucoes > .grafico {
+    .execucoes>.grafico {
       height: auto;
       width: 47%;
       padding: 2px;
     }
 
-    .execucoes > .grafico img {
+    .execucoes>.grafico img {
       position: relative;
       display: block;
       width: 100%;
       height: 100%;
     }
 
+    .table-responsive{
+      overflow-x: auto;
+      margin-bottom: 11px;
+    }
 
+    @media screen and (max-width: 860px) {
+      .horizontal-list{
+        flex-direction: column !important;
+      }
+      .execucoes>.grafico {
+        height: auto;
+        width: 100%;
+        padding: 2px;
+      }
+    }
   </style>
 </head>
 
@@ -151,56 +186,59 @@
       <section id="problema1">
         <h1>problema1</h1>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Algoritmo</th>
-              <th>Max</th>
-              <th>Min</th>
-              <th>Média</th>
-              <th>Desvio Padrão</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            <tr>
-              <td class="capitalize">ag</td>
-              <td>-9.606003824685747</td>
-              <td>-9.999999999999998</td>
-              <td>-9.92120076361045</td>
-              <td>0.1575984690774732</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">hillClimbing</td>
-              <td>21.920545254915357</td>
-              <td>-8.423809995091627</td>
-              <td>1.2771720233182133</td>
-              <td>10.25000127920738</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">hillClimbingRestart</td>
-              <td>-6.453906288596162</td>
-              <td>-9.999995410620217</td>
-              <td>-9.43902920417629</td>
-              <td>1.0132094276232424</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">simulatedAnnealing</td>
-              <td>15.218509733135141</td>
-              <td>-9.951960323761009</td>
-              <td>-4.509847161991551</td>
-              <td>7.168560054947429</td>
-            </tr>
-            
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Algoritmo</th>
+                <th>Max</th>
+                <th>Min</th>
+                <th>Média</th>
+                <th>Desvio Padrão</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr>
+                <td class="capitalize">ag</td>
+                <td>-9.606003824685747</td>
+                <td>-9.999999999999998</td>
+                <td>-9.92120076361045</td>
+                <td>0.1575984690774732</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">hillClimbing</td>
+                <td>21.920545254915357</td>
+                <td>-8.423809995091627</td>
+                <td>1.2771720233182133</td>
+                <td>10.25000127920738</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">hillClimbingRestart</td>
+                <td>-6.453906288596162</td>
+                <td>-9.999995410620217</td>
+                <td>-9.43902920417629</td>
+                <td>1.0132094276232424</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">simulatedAnnealing</td>
+                <td>15.218509733135141</td>
+                <td>-9.951960323761009</td>
+                <td>-4.509847161991551</td>
+                <td>7.168560054947429</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+
 
         <div class="container">
           <h2>Execuções</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema1/currents.png" alt="">
@@ -223,7 +261,7 @@
 
         <div class="container">
           <h2>Média Execuções</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema1/mean-current.png" alt="">
@@ -246,7 +284,7 @@
 
         <div class="container">
           <h2>Melhores</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema1/bests.png" alt="">
@@ -298,56 +336,59 @@
       <section id="problema2">
         <h1>problema2</h1>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Algoritmo</th>
-              <th>Max</th>
-              <th>Min</th>
-              <th>Média</th>
-              <th>Desvio Padrão</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            <tr>
-              <td class="capitalize">ag</td>
-              <td>1.0287553348890146</td>
-              <td>0.000014236838930870022</td>
-              <td>0.4293457092299528</td>
-              <td>0.4769755496822307</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">hillClimbing</td>
-              <td>1.8884742878810528</td>
-              <td>0.0678280863808407</td>
-              <td>0.9241981010179104</td>
-              <td>0.5427647456967661</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">hillClimbingRestart</td>
-              <td>2.400082451461399</td>
-              <td>0.17479005303059303</td>
-              <td>1.356109337307263</td>
-              <td>0.7610969726809846</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">simulatedAnnealing</td>
-              <td>2.034752517734928</td>
-              <td>0.1273927979168512</td>
-              <td>1.2907610427253495</td>
-              <td>0.6236628674343265</td>
-            </tr>
-            
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Algoritmo</th>
+                <th>Max</th>
+                <th>Min</th>
+                <th>Média</th>
+                <th>Desvio Padrão</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr>
+                <td class="capitalize">ag</td>
+                <td>1.0287553348890146</td>
+                <td>0.000014236838930870022</td>
+                <td>0.4293457092299528</td>
+                <td>0.4769755496822307</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">hillClimbing</td>
+                <td>1.8884742878810528</td>
+                <td>0.0678280863808407</td>
+                <td>0.9241981010179104</td>
+                <td>0.5427647456967661</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">hillClimbingRestart</td>
+                <td>2.400082451461399</td>
+                <td>0.17479005303059303</td>
+                <td>1.356109337307263</td>
+                <td>0.7610969726809846</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">simulatedAnnealing</td>
+                <td>2.034752517734928</td>
+                <td>0.1273927979168512</td>
+                <td>1.2907610427253495</td>
+                <td>0.6236628674343265</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+
 
         <div class="container">
           <h2>Execuções</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema2/currents.png" alt="">
@@ -370,7 +411,7 @@
 
         <div class="container">
           <h2>Média Execuções</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema2/mean-current.png" alt="">
@@ -393,7 +434,7 @@
 
         <div class="container">
           <h2>Melhores</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema2/bests.png" alt="">
@@ -445,56 +486,59 @@
       <section id="problema3">
         <h1>problema3</h1>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Algoritmo</th>
-              <th>Max</th>
-              <th>Min</th>
-              <th>Média</th>
-              <th>Desvio Padrão</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            <tr>
-              <td class="capitalize">ag</td>
-              <td>15877.96377131872</td>
-              <td>10892.415284719464</td>
-              <td>14220.904479484618</td>
-              <td>1302.4920915687028</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">hillClimbing</td>
-              <td>13548.969987416102</td>
-              <td>10182.95857312489</td>
-              <td>11995.025998680056</td>
-              <td>962.3722715769217</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">hillClimbingRestart</td>
-              <td>18817.347626126855</td>
-              <td>17199.95790832993</td>
-              <td>18296.17270078763</td>
-              <td>456.0119088721592</td>
-            </tr>
-            
-            <tr>
-              <td class="capitalize">simulatedAnnealing</td>
-              <td>17305.739841830793</td>
-              <td>15381.559951041883</td>
-              <td>16533.167776630566</td>
-              <td>549.3819699346919</td>
-            </tr>
-            
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Algoritmo</th>
+                <th>Max</th>
+                <th>Min</th>
+                <th>Média</th>
+                <th>Desvio Padrão</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr>
+                <td class="capitalize">ag</td>
+                <td>15877.96377131872</td>
+                <td>10892.415284719464</td>
+                <td>14220.904479484618</td>
+                <td>1302.4920915687028</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">hillClimbing</td>
+                <td>13548.969987416102</td>
+                <td>10182.95857312489</td>
+                <td>11995.025998680056</td>
+                <td>962.3722715769217</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">hillClimbingRestart</td>
+                <td>18817.347626126855</td>
+                <td>17199.95790832993</td>
+                <td>18296.17270078763</td>
+                <td>456.0119088721592</td>
+              </tr>
+              
+              <tr>
+                <td class="capitalize">simulatedAnnealing</td>
+                <td>17305.739841830793</td>
+                <td>15381.559951041883</td>
+                <td>16533.167776630566</td>
+                <td>549.3819699346919</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+
 
         <div class="container">
           <h2>Execuções</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema3/currents.png" alt="">
@@ -517,7 +561,7 @@
 
         <div class="container">
           <h2>Média Execuções</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema3/mean-current.png" alt="">
@@ -540,7 +584,7 @@
 
         <div class="container">
           <h2>Melhores</h2>
-          <div class="horizontal-list execucoes" >
+          <div class="horizontal-list execucoes">
             
             <div class="grafico">
               <img src="ag-problema3/bests.png" alt="">
