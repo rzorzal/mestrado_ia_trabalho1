@@ -9,7 +9,7 @@
     "problema2": "npm start hillClimbing problema2 && npm start hillClimbingRestart problema2 && npm start simulatedAnnealing problema2 && npm start ag problema2",
     "problema3": "npm start hillClimbing problema3 ./input/38cities.txt && npm start hillClimbingRestart problema3 ./input/38cities.txt && npm start simulatedAnnealing problema3 ./input/38cities.txt && npm start ag problema3 ./input/38cities.txt",
     "all": "npm run problema1 && npm run problema2 && npm run problema3",
-    "look-report": "node report.mjs && npx http-server ./output",
+    "look-report": "node report.mjs && npx http-server ./docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
