@@ -42,6 +42,42 @@ export const generateInitalNumber = () => {
   return [generate(), generate()]
 }
 
+export const generateIndividuals = () => {
+  return generateInitalNumber();
+}
+
+export const mutation = (child) => {
+  const probability = Math.floor(Math.random()*100);
+  if(probability>30) return child;
+  const childResult1 = (new BigFloat32(child[0]).add(randomNormal({
+    mean: 0,
+    dev: 2
+  }))).valueOf();
+  const childResult2 = (new BigFloat32(child[1]).add(randomNormal({
+    mean: 0,
+    dev: 2
+  }))).valueOf();
+  return isInLimits(childResult1) && isInLimits(childResult2) && [childResult1, childResult2] || mutation(child);
+}
+
+export const crossOver = (parent1, parent2) => {
+  const alfa = Math.abs(randomNormal({
+    mean: 0,
+    dev: 1
+  }));
+
+  const beta = Math.abs(randomNormal({
+    mean: 0,
+    dev: 1
+  }));
+
+  const child11 = parent1[0]*alfa + parent2[0]*(1-alfa);
+  const child12 = parent2[0]*alfa + parent1[0]*(1-alfa);
+  const child21 = parent1[1]*beta + parent2[1]*(1-beta);
+  const child22 = parent2[1]*beta + parent1[1]*(1-beta);
+  return isInLimits(child11) && isInLimits(child12) && isInLimits(child21) && isInLimits(child22) && [[child11, child21], [child12, child22]] || crossOver(parent1, parent2);
+}
+
 export const plot = async () => {
   const plotMe = (step) => {
     return new Promise( async (resolve) => {

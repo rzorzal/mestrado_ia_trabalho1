@@ -7,7 +7,7 @@ import fs from 'fs';
 
 const fsPromise = fs.promises;
 
-  const initial = shuffe(Array.from(new Array(problem.Points.length).keys()));
+const initial = shuffe(Array.from(new Array(problem.Points.length).keys()));
 
 export const FO = (solution) => {
   return solution.reduce((weight, citie, index) => {
@@ -31,6 +31,43 @@ export const getMinSuccessor = (solution) => {
 export const generateInitalNumber = () => {
   return initial;
 };
+
+export const generateIndividuals = () => {
+  return shuffe(Array.from(new Array(problem.Points.length).keys()));
+}
+
+export const mutation = (child) => {
+  const probability = Math.floor(Math.random()*100);
+  if(probability<10 || probability>20) return child;
+
+  return getMinSuccessor(child);
+}
+
+export const crossOver = (parent1, parent2) => {
+  const breakPoint = Math.max(Math.floor(Math.random() * parent1.length) + 2, 1);
+
+  const parent1Left = parent1.slice(0, breakPoint);
+  const parent1Right = parent1.slice(breakPoint);
+
+  const parent2Left = parent2.slice(0, breakPoint);
+  const parent2Right = parent2.slice(breakPoint);
+
+  const child1 = [...parent1Right];
+  parent1.forEach( el => {
+    if(!child1.includes(el)){
+      child1.unshift(el)
+    }
+  });
+
+  const child2 = [...parent2Right];
+  parent2.forEach( el => {
+    if(!child2.includes(el)){
+      child2.unshift(el)
+    }
+  });
+
+  return [child1, child2];
+}
 
 export const plot = () => {
   return (solution, ID, folder) => {
