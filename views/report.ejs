@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>Report - Trabalho1 - Disciplina IA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" charset="utf-8"></script>
   <style media="screen">
     * {
       font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -136,7 +137,7 @@
 
     .execucoes>.grafico {
       height: auto;
-      width: 47%;
+      width: 50%;
       padding: 2px;
     }
 
@@ -147,15 +148,16 @@
       height: 100%;
     }
 
-    .table-responsive{
+    .table-responsive {
       overflow-x: auto;
       margin-bottom: 11px;
     }
 
     @media screen and (max-width: 860px) {
-      .horizontal-list{
+      .horizontal-list {
         flex-direction: column !important;
       }
+
       .execucoes>.grafico {
         height: auto;
         width: 100%;
@@ -163,6 +165,72 @@
       }
     }
   </style>
+  <script type="text/javascript">
+    window.COLORS = ["#C8BFC7", "#7A9B76", "#8A7E72", "#5A2328", "#090302", "#231C07", "#634133", "#F78764", "#B95F89", "#67AAF9"];
+    function drawChart(title, data, ctx, lineWidth = 1){
+      const allKeys = Array.from(new Array(1000).keys());
+      let datasets = data.map((dt, index) => {
+        return {
+          label: 'Execução ' + (index + 1),
+          backgroundColor: window.COLORS[index],
+          borderColor: window.COLORS[index],
+          pointBackgroundColor: "transparent",
+          pointBorderColor: "transparent",
+          borderWidth: lineWidth,
+          data: dt.map(a => parseFloat(a.value).toFixed(4)),
+          fill: false
+        }
+      })
+      const config = {
+        type: 'line',
+        data: {
+          labels: allKeys,
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          legend: {display: false},
+          title: {
+            display: true,
+            text: title.toUpperCase()
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: false,
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: true,
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Execuções',
+              },
+              ticks: {
+                min: allKeys[0],
+                max: allKeys[allKeys.length-1],
+                stepSize: 200,
+                maxTicksLimit: 7
+              }
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Função objetivo'
+              }
+            }]
+          }
+        }
+      };
+      const chart = new Chart(ctx, config);
+      return chart;
+    }
+  </script>
 </head>
 
 <body>
@@ -207,13 +275,19 @@
           </table>
         </div>
 
-
         <div class="container">
           <h2>Execuções</h2>
           <div class="horizontal-list execucoes">
             <% for(let algoritmo in this[problema].algoritmos){ %>
             <div class="grafico">
-              <img src="<%= this[problema].algoritmos[algoritmo].graficos.currents %>" alt="">
+              <canvas id="<%= problema %>-<%= algoritmo %>-execucoes"></canvas>
+              <script type="text/javascript">
+              (function() {
+                  const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-execucoes').getContext('2d');
+                  const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData.currents) %> ;
+                  drawChart("<%= algoritmo %>", data, ctx);
+                })();
+              </script>
             </div>
             <% } %>
           </div>
@@ -224,7 +298,14 @@
           <div class="horizontal-list execucoes">
             <% for(let algoritmo in this[problema].algoritmos){ %>
             <div class="grafico">
-              <img src="<%= this[problema].algoritmos[algoritmo].graficos['mean-current'] %>" alt="">
+              <canvas id="<%= problema %>-<%= algoritmo %>-media-execucoes"></canvas>
+              <script type="text/javascript">
+              (function() {
+                  const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-media-execucoes').getContext('2d');
+                  const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['mean-current']) %> ;
+                  drawChart("<%= algoritmo %>", data, ctx, 3);
+                })();
+              </script>
             </div>
             <% } %>
           </div>
@@ -235,7 +316,14 @@
           <div class="horizontal-list execucoes">
             <% for(let algoritmo in this[problema].algoritmos){ %>
             <div class="grafico">
-              <img src="<%= this[problema].algoritmos[algoritmo].graficos.bests %>" alt="">
+              <canvas id="<%= problema %>-<%= algoritmo %>-melhores"></canvas>
+              <script type="text/javascript">
+              (function() {
+                  const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-melhores').getContext('2d');
+                  const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['bests']) %> ;
+                  drawChart("<%= algoritmo %>", data, ctx);
+                })();
+              </script>
             </div>
             <% } %>
           </div>
@@ -246,11 +334,62 @@
           <div class="horizontal-list execucoes">
             <% for(let algoritmo in this[problema].algoritmos){ %>
             <div class="grafico">
-              <img src="<%= this[problema].algoritmos[algoritmo].graficos['mean-best'] %>" alt="">
+              <canvas id="<%= problema %>-<%= algoritmo %>-media-best"></canvas>
+              <script type="text/javascript">
+              (function() {
+                  const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-media-best').getContext('2d');
+                  const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['mean-best']) %> ;
+                  drawChart("<%= algoritmo %>", data, ctx, 3);
+                })();
+              </script>
             </div>
             <% } %>
           </div>
         </div>
+
+        <!-- <div class="container">
+          <h2>Execuções</h2>
+          <div class="horizontal-list execucoes">
+            <% for(let algoritmo in this[problema].algoritmos){ %>
+            <div class="grafico">
+              <img src="<%= this[problema].algoritmos[algoritmo].graficos.currents %>" alt="">
+            </div>
+            <% } %>
+          </div>
+        </div> -->
+
+        <!-- <div class="container">
+          <h2>Média Execuções</h2>
+          <div class="horizontal-list execucoes">
+            <% for(let algoritmo in this[problema].algoritmos){ %>
+            <div class="grafico">
+              <img src="<%= this[problema].algoritmos[algoritmo].graficos['mean-current'] %>" alt="">
+            </div>
+            <% } %>
+          </div>
+        </div> -->
+
+        <!-- <div class="container">
+          <h2>Melhores</h2>
+          <div class="horizontal-list execucoes">
+            <% for(let algoritmo in this[problema].algoritmos){ %>
+            <div class="grafico">
+              <img src="<%= this[problema].algoritmos[algoritmo].graficos.bests %>" alt="">
+            </div>
+            <% } %>
+          </div>
+        </div> -->
+
+        <!-- <div class="container">
+          <h2>Média Melhores</h2>
+          <div class="horizontal-list execucoes">
+            <% for(let algoritmo in this[problema].algoritmos){ %>
+            <div class="grafico">
+              <img src="<%= this[problema].algoritmos[algoritmo].graficos['mean-best'] %>" alt="">
+            </div>
+            <% } %>
+          </div>
+        </div> -->
 
 
 

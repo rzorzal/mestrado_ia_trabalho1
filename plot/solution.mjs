@@ -1,4 +1,5 @@
 import linePlot from './line.mjs';
+import writeFile from '../helpers/writeFile.mjs';
 
 export default async (history, title, countRunsCorrection ) => {
   const dataCurrents = history.map((a) => {
@@ -17,6 +18,8 @@ export default async (history, title, countRunsCorrection ) => {
     lineColors: ["#C8BFC7", "#7A9B76", "#8A7E72", "#5A2328", "#090302", "#231C07", "#634133", "#F78764", "#B95F89", "#67AAF9"],
   });
 
+  await writeFile(`./output/${title}/currents.json`, dataCurrents);
+
   const dataBests = history.map((a) => {
     return a.map((b, index) => ({
       key: index,
@@ -33,7 +36,7 @@ export default async (history, title, countRunsCorrection ) => {
     lineColors: ["#C8BFC7", "#7A9B76", "#8A7E72", "#5A2328", "#090302", "#231C07", "#634133", "#F78764", "#B95F89", "#67AAF9"],
   });
 
-
+  await writeFile(`./output/${title}/bests.json`, dataBests);
 
 
 
@@ -96,6 +99,8 @@ export default async (history, title, countRunsCorrection ) => {
     lineColors: ['#39FF14', 'BLACK', 'BLUE'],
   });
 
+  await writeFile(`./output/${title}/mean-best.json`, REPORT);
+
 
 
   const SUMS_MEAN_CURRENT = [];
@@ -156,4 +161,6 @@ export default async (history, title, countRunsCorrection ) => {
     resultName: "mean-current",
     lineColors: ['#39FF14', 'BLACK', 'BLUE'],
   });
+
+  await writeFile(`./output/${title}/mean-current.json`, REPORT);
 }

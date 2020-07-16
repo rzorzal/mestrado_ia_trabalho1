@@ -122,7 +122,7 @@ export default (FO, generateInitalNumber, getMinSuccessor, generateIndividuals, 
   });
 
   //initial population
-  for(let individualIndex = 0; individualIndex< 19; individualIndex++){
+  for(let individualIndex = 0; individualIndex< 9; individualIndex++){
     const individual = generateIndividuals();
     const FOIndividual = FO(individual);
     if(FOBEST > FOIndividual){
@@ -144,17 +144,17 @@ export default (FO, generateInitalNumber, getMinSuccessor, generateIndividuals, 
   let population = [...history];
 
 
-  for(let generation = 0; generation < 49; generation++){
+  for(let generation = 0; generation < 99; generation++){
     const newPopulation = [];
 
-    for(let generateIndex = 0; generateIndex < 10; generateIndex++){
+    for(let generateIndex = 0; generateIndex < 5; generateIndex++){
 
 
-      const parent1 = selectParent()(population);
-      const parent2 = selectParent()(population);
+      // const parent1 = selectParent()(population);
+      // const parent2 = selectParent()(population);
 
-      // const parent1 = selectParentTorunamentNormal(population);
-      // const parent2 = selectParentTorunamentNormal(population);
+      const parent1 = selectParentTorunamentNormal(population);
+      const parent2 = selectParentTorunamentNormal(population);
 
       let [child1, child2] = crossOver(parent1,parent2);
 

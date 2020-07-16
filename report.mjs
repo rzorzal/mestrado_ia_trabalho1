@@ -49,6 +49,14 @@ function init() {
       }
 
 
+      memo[problema].algoritmos[algoritmo].graficosData = {
+        'bests': JSON.parse(fs.readFileSync(`./output/${foldername}/bests.json`, 'utf-8')),
+        'currents': JSON.parse(fs.readFileSync(`./output/${foldername}/currents.json`, 'utf-8')),
+        'mean-best': JSON.parse(fs.readFileSync(`./output/${foldername}/mean-best.json`, 'utf-8')),
+        'mean-current': JSON.parse(fs.readFileSync(`./output/${foldername}/mean-current.json`, 'utf-8')),
+      }
+
+
       memo[problema].algoritmos[algoritmo].estatistica = JSON.parse(fs.readFileSync(`./output/${foldername}/estatistica.json`, 'utf-8'));
       memo[problema].algoritmos[algoritmo].history = JSON.parse(fs.readFileSync(`./output/${foldername}/history.json`, 'utf-8'));
       memo[problema].estatisticas.push({...memo[problema].algoritmos[algoritmo].estatistica, algoritmo: algoritmo});
