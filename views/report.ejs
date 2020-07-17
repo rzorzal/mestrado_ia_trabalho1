@@ -178,68 +178,83 @@
   <script type="text/javascript">
     window.COLORS = ["#634133", "#C8BFC7", "#67AAF9", "#7A9B76", "#8A7E72", "#5A2328", "#090302", "#231C07", , "#F78764", "#B95F89"];
     function drawChart(title, data, ctx, lineWidth = 1, showLegend = false){
-      const allKeys = Array.from(new Array(1000).keys());
-      let datasets = data.map((dt, index) => {
-        return {
-          label: dt.dataSetLabel || 'Execução ' + (index + 1),
-          backgroundColor: window.COLORS[index],
-          borderColor: window.COLORS[index],
-          pointBackgroundColor: "transparent",
-          pointBorderColor: "transparent",
-          borderWidth: lineWidth,
-          data: dt.map(a => parseFloat(a.value).toFixed(4)),
-          fill: false
-        }
-      })
-      const config = {
-        type: 'line',
-        data: {
-          labels: allKeys,
-          datasets: datasets
-        },
-        options: {
-          responsive: true,
-          legend: {display: showLegend},
-          title: {
-            display: true,
-            text: title.toUpperCase()
-          },
-          tooltips: {
-            mode: 'index',
-            intersect: false,
-            displayColors: false
-          },
-          hover: {
-            mode: 'nearest',
-            intersect: true,
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: true,
-              scaleLabel: {
-                display: true,
-                labelString: 'Execuções',
-              },
-              ticks: {
-                min: allKeys[0],
-                max: allKeys[allKeys.length-1],
-                stepSize: 200,
-                maxTicksLimit: 7
-              }
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: {
-                display: true,
-                labelString: 'Função objetivo'
-              }
-            }]
+      return new Promise(resolve => {
+        const allKeys = Array.from(new Array(1000).keys());
+        let datasets = data.map((dt, index) => {
+          return {
+            label: dt.dataSetLabel || 'Execução ' + (index + 1),
+            backgroundColor: window.COLORS[index],
+            borderColor: window.COLORS[index],
+            pointBackgroundColor: "transparent",
+            pointBorderColor: "transparent",
+            borderWidth: lineWidth,
+            data: dt.map(a => parseFloat(a.value).toFixed(4)),
+            fill: false
           }
-        }
-      };
-      const chart = new Chart(ctx, config);
-      return chart;
+        })
+        const config = {
+          type: 'line',
+          data: {
+            labels: allKeys,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            elements:{
+              line: {
+                tension: 0
+              },
+            },
+            animation: {
+              onComplete: function() {
+                resolve()
+              }
+            },
+            responsiveAnimationDuration: 0,
+            legend: {display: showLegend},
+            title: {
+              display: true,
+              text: title.toUpperCase()
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false,
+              displayColors: false
+            },
+            hover: {
+              mode: 'nearest',
+              intersect: true,
+              display: false,
+              animationDuration: 0
+            },
+            scales: {
+              xAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Execuções',
+                },
+                ticks: {
+                  min: allKeys[0],
+                  max: allKeys[allKeys.length-1],
+                  stepSize: 200,
+                  maxTicksLimit: 7
+                }
+              }],
+              yAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Função objetivo'
+                }
+              }]
+            }
+          }
+        };
+        const chart = new Chart(ctx, config);
+        return chart;
+      })
+
     }
 
     const onLoadList = [];
@@ -247,9 +262,18 @@
       onLoadList.push(func);
     }
     window.onload = function(){
+      const progress = document.getElementById('progress');
+      progress.setAttribute('max', onLoadList.length);
+      let progressValue = 0;
       console.log(onLoadList)
-      onLoadList.forEach(async cb => {
-        cb()
+      onLoadList.forEach(cb => {
+        requestAnimationFrame(async() => {
+          await cb();
+          progressValue++;
+          progress.setAttribute('value', progressValue);
+          if(progressValue >=  onLoadList.length) progress.style.display = "none";
+        })
+
       })
     }
   </script>
@@ -267,7 +291,7 @@
     </ul>
 
     <article>
-
+      <progress style="width: 100%;" id="progress" value="0" max="100"></progress>
       <% for(let problema of this.problemas){ %>
       <section id="<%=problema%>">
         <h1><%=problema%></h1>
@@ -318,7 +342,7 @@
                       dt.dataSetLabel = dataSetsLabels[index];
                       return dt;
                     })
-                    drawChart(" ", data, ctx, 3, true);
+                    return drawChart(" ", data, ctx, 3, true);
                   });
                   addOnLoad(function(){
                     function onChangeCheckBox(){
@@ -357,7 +381,7 @@
               addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-execucoes').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData.currents) %> ;
-                  drawChart("<%= algoritmo %>", data, ctx);
+                  return drawChart("<%= algoritmo %>", data, ctx);
                 });
               </script>
             </div>
@@ -375,7 +399,7 @@
               addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-media-execucoes').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['mean-current']) %> ;
-                  drawChart("<%= algoritmo %>", data, ctx, 3);
+                  return drawChart("<%= algoritmo %>", data, ctx, 3);
                 });
               </script>
             </div>
@@ -393,7 +417,7 @@
               addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-melhores').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['bests']) %> ;
-                  drawChart("<%= algoritmo %>", data, ctx);
+                  return drawChart("<%= algoritmo %>", data, ctx);
                 })
               </script>
             </div>
@@ -411,7 +435,7 @@
               addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-media-best').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['mean-best']) %> ;
-                  drawChart("<%= algoritmo %>", data, ctx, 3);
+                  return drawChart("<%= algoritmo %>", data, ctx, 3);
                 })
               </script>
             </div>
