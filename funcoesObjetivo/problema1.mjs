@@ -1,7 +1,10 @@
 import randomNormal from 'random-normal';
 import bigfloat from 'bigfloat';
 import linePlot from '../plot/line.mjs';
+import problem from "../helpers/fileToProblem.mjs";
 
+const INPUTS = problem && problem.Points;
+let inputUsegeIndex = 0;
 
 const BigFloat32 = bigfloat.BigFloat32;
 
@@ -24,6 +27,7 @@ export const getMinSuccessor = (value) => {
 }
 
 export const generateInitalNumber = () => {
+  if(INPUTS && INPUTS[inputUsegeIndex]) return parseFloat(INPUTS[inputUsegeIndex++][0]);
   const initial = Math.floor(Math.random() * LIMITADOR_DIREITA) + LIMITADOR_ESQUERDA;
   return isInLimits(initial) && initial || generateInitalNumber();
 };
@@ -53,54 +57,9 @@ export const crossOver = (parent1, parent2) => {
   return isInLimits(child1) && isInLimits(child2) && [child1, child2] || crossOver(parent1, parent2);
 }
 
-export const plot = (step = 1) => {
-  return (solution, ID, folder) => {
-    return new Promise(async (resolve) => {
-      let data = [];
-      for (let i = LIMITADOR_ESQUERDA; i <= LIMITADOR_DIREITA; i += step) {
-        data.push({
-          key: i,
-          value: FO(i)
-        })
-      }
-      linePlot({
-        data: data,
-        title: folder + `/${ID}`,
-        resultName: "out",
-        lineColors: ['#39FF14'],
-        // addCustom: (svg, d3, d3n) => {
-        //
-        //   const xScale = d3.scaleLinear()
-        //     .domain(d3.extent(data, d => d.key))
-        //     .rangeRound([0, 1000]);
-        //   const yScale = d3.scaleLinear()
-        //     .domain(d3.extent(data, d => d.value))
-        //     .rangeRound([580, 0]);
-        //
-        //   const GS = svg.append("g")
-        //     .attr("stroke", "red")
-        //     .attr('fill', 'blue')
-        //     .attr("x", xScale(solution))
-        //     .attr("y", yScale(FO(solution)))
-        //     .selectAll("circle")
-        //     .data([{
-        //       x: solution,
-        //       y: FO(solution)
-        //     }])
-        //     .enter();
-        //
-        //   const TEXT = GS.append("g")
-        //
-        //   TEXT.append("circle")
-        //     .attr("x", d => xScale(d.x))
-        //     .attr("y", d => yScale(d.y))
-        //     .attr("r", 5);
-        //
-        // }
-      });
-
-      resolve();
-    })
-  }
-
-}
+export const resultadoText = `
+  Ao olharmos para o gráfico de comparação (melhor), podemos perceber que o Hill Climbing sem restart encontra um minimo local e não ocnsegue sair deste.
+  O Hill Climbing com restart consegue se sair melhor pois conta com a aleatoriedade para fugir os minimos locais e consegue bons resultados. Não tem muita distorção e variação nos valores (ver gráfico de exeção).
+  Já o Simulated Annelaning tem muita distorção até chegar na parte final da execução, onde parece melhorar o resultado e manter nele. Também encontra bons resultados.
+  O melhor neste caso será o AG que logo nas primeiras exeuções acha bons resultados e mantem um pequena distorção ao longo das execuções. Ele encontra o melhor resultado. 
+`

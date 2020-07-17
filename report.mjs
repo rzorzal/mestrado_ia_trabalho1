@@ -29,7 +29,11 @@ function init() {
       const problema = foldernameSplited[1];
 
       if(!memo[problema]){
-        memo[problema] = { estatisticas: [], algoritmos: {}};
+        memo[problema] = {
+          estatisticas: [],
+          algoritmos: {},
+          resultado: fs.readFileSync(`./output/${foldername}/resultado.txt`, 'utf-8')
+        };
       }
 
       if(!memo[problema].algoritmos[algoritmo]){

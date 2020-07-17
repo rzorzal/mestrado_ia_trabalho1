@@ -1,0 +1,5 @@
+
+  Para este tipo de problema, o Hill Climbing sem restart consegue fugir dos mínimos locais, mas há uma certa demora, ele encontra bons resultados a medida que caminha.
+  Já o com restart não tem uma boa performance, pois como o restart pode faze-lo sair muito de uma boa zona, ele acaba se dispersando muito (olhar gráfico de execuções);
+  O Simulated Annelaning tem muita distorção no inicio, mas consegue chegar em um bom resultado ao final, quando já não aceita muitos resultados ruins.
+  O AG, apesar de ter muita variedade nos gerações, consegue encontrar índiduos bons ao longo do percurso e não varia muito o resultado (olhar gráfico de média dos melhores).

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.mjs",
-    "problema1": "npm start hillClimbing problema1 && npm start hillClimbingRestart problema1 && npm start simulatedAnnealing problema1 && npm start ag problema1",
-    "problema2": "npm start hillClimbing problema2 && npm start hillClimbingRestart problema2 && npm start simulatedAnnealing problema2 && npm start ag problema2",
+    "problema1": "npm start hillClimbing problema1 ./input/problema1.txt && npm start hillClimbingRestart problema1 ./input/problema1.txt && npm start simulatedAnnealing problema1 ./input/problema1.txt && npm start ag problema1 ./input/problema1.txt",
+    "problema2": "npm start hillClimbing problema2 ./input/problema2.txt && npm start hillClimbingRestart problema2 ./input/problema2.txt && npm start simulatedAnnealing problema2 ./input/problema2.txt && npm start ag problema2 ./input/problema2.txt",
     "problema3": "npm start hillClimbing problema3 ./input/38cities.txt && npm start hillClimbingRestart problema3 ./input/38cities.txt && npm start simulatedAnnealing problema3 ./input/38cities.txt && npm start ag problema3 ./input/38cities.txt",
     "all": "npm run problema1 && npm run problema2 && npm run problema3 && node report.mjs",
     "look-report": "node report.mjs && npx http-server ./docs",

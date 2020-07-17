@@ -14,6 +14,12 @@
       letter-spacing: 0.01071em;
     }
 
+    blockquote{
+      text-align: justify;
+      margin: 0;
+      padding: 5px;
+    }
+
     a {
       text-decoration: none;
     }
@@ -128,11 +134,15 @@
 
     .container {
       padding: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid #8a8686;
       border-radius: 5px;
       margin-bottom: 11px;
       background-color: #fff;
-      box-shadow: 2px 2px 5px #ddd;
+      box-shadow: 2px 2px 5px #8a8686;
+    }
+
+    .grafico-full{
+      width: 100% !important;
     }
 
     .execucoes>.grafico {
@@ -166,12 +176,12 @@
     }
   </style>
   <script type="text/javascript">
-    window.COLORS = ["#C8BFC7", "#7A9B76", "#8A7E72", "#5A2328", "#090302", "#231C07", "#634133", "#F78764", "#B95F89", "#67AAF9"];
-    function drawChart(title, data, ctx, lineWidth = 1){
+    window.COLORS = ["#634133", "#C8BFC7", "#67AAF9", "#7A9B76", "#8A7E72", "#5A2328", "#090302", "#231C07", , "#F78764", "#B95F89"];
+    function drawChart(title, data, ctx, lineWidth = 1, showLegend = false){
       const allKeys = Array.from(new Array(1000).keys());
       let datasets = data.map((dt, index) => {
         return {
-          label: 'Execução ' + (index + 1),
+          label: dt.dataSetLabel || 'Execução ' + (index + 1),
           backgroundColor: window.COLORS[index],
           borderColor: window.COLORS[index],
           pointBackgroundColor: "transparent",
@@ -189,7 +199,7 @@
         },
         options: {
           responsive: true,
-          legend: {display: false},
+          legend: {display: showLegend},
           title: {
             display: true,
             text: title.toUpperCase()
@@ -197,6 +207,7 @@
           tooltips: {
             mode: 'index',
             intersect: false,
+            displayColors: false
           },
           hover: {
             mode: 'nearest',
@@ -229,6 +240,17 @@
       };
       const chart = new Chart(ctx, config);
       return chart;
+    }
+
+    const onLoadList = [];
+    function addOnLoad(func){
+      onLoadList.push(func);
+    }
+    window.onload = function(){
+      console.log(onLoadList)
+      onLoadList.forEach(async cb => {
+        cb()
+      })
     }
   </script>
 </head>
@@ -275,6 +297,56 @@
           </table>
         </div>
 
+        <div class="horizontal-list">
+          <div class="container" style="width: 70%;">
+            <h2>
+              Comparativo
+              <small><input name="<%= problema %>-comparativo-radio" data-index="2" type="radio">Pior</small>
+              <small><input checked name="<%= problema %>-comparativo-radio" data-index="0" type="radio">Média</small>
+              <small><input name="<%= problema %>-comparativo-radio" data-index="1" type="radio">Melhor</small>
+            </h2>
+            <div class="horizontal-list execucoes">
+              <div class="grafico grafico-full">
+                <% for(let i = 0; i < 3; i++){ %>
+                  <canvas style='display: none;' class="<%= problema %>-comparativo" id="<%= problema %>-<%= i %>-comparativo"></canvas>
+                  <script type="text/javascript">
+                  addOnLoad(function() {
+                    const ctx = document.getElementById('<%= problema %>-<%= i %>-comparativo').getContext('2d');
+                    let data = <%- JSON.stringify(Object.values(this[problema].algoritmos).map(algoritmoData => algoritmoData.graficosData.bests[i]))%> ;
+                    const dataSetsLabels = <%- JSON.stringify(Object.keys(this[problema].algoritmos))%>;
+                    data = data.map( (dt, index) => {
+                      dt.dataSetLabel = dataSetsLabels[index];
+                      return dt;
+                    })
+                    drawChart(" ", data, ctx, 3, true);
+                  });
+                  addOnLoad(function(){
+                    function onChangeCheckBox(){
+                      document.querySelectorAll(".<%= problema %>-comparativo").forEach(el => el.style.display = "none");
+                      const chartIndex = document.querySelector(`[name="<%= problema %>-comparativo-radio"]:checked`).getAttribute('data-index');
+                      document.querySelector(`#<%= problema %>-${chartIndex}-comparativo`).style.display = "block";
+                    }
+                    document.querySelectorAll('input[name="<%= problema %>-comparativo-radio"]').forEach(el => {
+                      el.addEventListener('change', onChangeCheckBox);
+                    });
+
+                    onChangeCheckBox();
+                  });
+                  </script>
+                  <% } %>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="container" style="width: 29%;">
+              <h2>Resultado</h2>
+              <blockquote>
+                <%= this[problema].resultado && this[problema].resultado.trim() || "" %>
+              </blockquote>
+            </div>
+        </div>
+
         <div class="container">
           <h2>Execuções</h2>
           <div class="horizontal-list execucoes">
@@ -282,11 +354,11 @@
             <div class="grafico">
               <canvas id="<%= problema %>-<%= algoritmo %>-execucoes"></canvas>
               <script type="text/javascript">
-              (function() {
+              addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-execucoes').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData.currents) %> ;
                   drawChart("<%= algoritmo %>", data, ctx);
-                })();
+                });
               </script>
             </div>
             <% } %>
@@ -300,11 +372,11 @@
             <div class="grafico">
               <canvas id="<%= problema %>-<%= algoritmo %>-media-execucoes"></canvas>
               <script type="text/javascript">
-              (function() {
+              addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-media-execucoes').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['mean-current']) %> ;
                   drawChart("<%= algoritmo %>", data, ctx, 3);
-                })();
+                });
               </script>
             </div>
             <% } %>
@@ -318,11 +390,11 @@
             <div class="grafico">
               <canvas id="<%= problema %>-<%= algoritmo %>-melhores"></canvas>
               <script type="text/javascript">
-              (function() {
+              addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-melhores').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['bests']) %> ;
                   drawChart("<%= algoritmo %>", data, ctx);
-                })();
+                })
               </script>
             </div>
             <% } %>
@@ -336,11 +408,11 @@
             <div class="grafico">
               <canvas id="<%= problema %>-<%= algoritmo %>-media-best"></canvas>
               <script type="text/javascript">
-              (function() {
+              addOnLoad(function() {
                   const ctx = document.getElementById('<%= problema %>-<%= algoritmo %>-media-best').getContext('2d');
                   const data = <%- JSON.stringify(this[problema].algoritmos[algoritmo].graficosData['mean-best']) %> ;
                   drawChart("<%= algoritmo %>", data, ctx, 3);
-                })();
+                })
               </script>
             </div>
             <% } %>

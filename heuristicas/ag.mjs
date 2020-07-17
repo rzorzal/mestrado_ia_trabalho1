@@ -122,7 +122,7 @@ export default (FO, generateInitalNumber, getMinSuccessor, generateIndividuals, 
   });
 
   //initial population
-  for(let individualIndex = 0; individualIndex< 9; individualIndex++){
+  for(let individualIndex = 0; individualIndex< 19; individualIndex++){
     const individual = generateIndividuals();
     const FOIndividual = FO(individual);
     if(FOBEST > FOIndividual){
@@ -144,10 +144,10 @@ export default (FO, generateInitalNumber, getMinSuccessor, generateIndividuals, 
   let population = [...history];
 
 
-  for(let generation = 0; generation < 99; generation++){
+  for(let generation = 0; generation < 49; generation++){
     const newPopulation = [];
 
-    for(let generateIndex = 0; generateIndex < 5; generateIndex++){
+    for(let generateIndex = 0; generateIndex < 10; generateIndex++){
 
 
       // const parent1 = selectParent()(population);

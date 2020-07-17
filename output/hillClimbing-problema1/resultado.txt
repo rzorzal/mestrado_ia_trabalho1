@@ -1,0 +1,5 @@
+
+  Ao olharmos para o gráfico de comparação (melhor), podemos perceber que o Hill Climbing sem restart encontra um minimo local e não ocnsegue sair deste.
+  O Hill Climbing com restart consegue se sair melhor pois conta com a aleatoriedade para fugir os minimos locais e consegue bons resultados. Não tem muita distorção e variação nos valores (ver gráfico de exeção).
+  Já o Simulated Annelaning tem muita distorção até chegar na parte final da execução, onde parece melhorar o resultado e manter nele. Também encontra bons resultados.
+  O melhor neste caso será o AG que logo nas primeiras exeuções acha bons resultados e mantem um pequena distorção ao longo das execuções. Ele encontra o melhor resultado. 

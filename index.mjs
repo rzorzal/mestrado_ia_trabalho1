@@ -33,7 +33,8 @@ Promise.all([
     plot,
     mutation,
     generateIndividuals,
-    crossOver
+    crossOver,
+    resultadoText
   },
   {
     default: HEURISTICA
@@ -80,6 +81,7 @@ Promise.all([
   await solutionPlot(history, folderName, countRunsCorrection);
   await fsPromise.writeFile(`./output/${folderName}/estatistica.json`, JSON.stringify(estatistica), 'utf8');
   await fsPromise.writeFile(`./output/${folderName}/history.json`, JSON.stringify(history), 'utf8');
+  await fsPromise.writeFile(`./output/${folderName}/resultado.txt`, resultadoText || "", 'utf8');
 
 
 });

@@ -1,0 +1,6 @@
+
+  Neste problema o Hill Climbing sem restart se sai melhor em quase todas as execuções, batendo de frente com o AG. Ele sempre tras os melhores resultados tanto nos Piores, Média e Melhor (olhar gráfico comaprativo).
+  O grande problema do Hill Climbing com restart acaba não aproveitando os bons resultados encontrados pelo caminho e acaba fazendo uma solução ruim a cada restart gerado. Em média é o pior algoritmo para o problema.
+  O Simulated Annealing tem uma execução boa neste problema, mas não consegue ficar entre os melhores, pois só encontra resultado bons no final do ciclo. Muito ruido é gerado antes disso (ver gráfico de execuções).
+  O AG não é o melhor neste caso, mas se equipara ao Hill Climbing com restart. As suas execuções tem uma taxa boa de caimento da FO (olhar gráfico de Melhores Médias), se ele pudesse executar mais ações ele certamente acharia o melhor resultado para o problema.
+  Neste problema a variação do Hill Climbing tente a se manter estável. Do AG dente a cair e o Simulated Annealing tende a cair (mas depende da sorte do inicio).
